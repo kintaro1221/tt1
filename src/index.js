@@ -3,12 +3,21 @@ import "./styles.css";
 const onClickAdd = () => {
   const inputText = document.getElementById("input-text").value;
   document.getElementById("input-text").value = " ";
+
+  creatFromIncomplete(inputText);
+};
+// 未完了リストから削除
+const deleteFromIncimpleteList = (deleteTarget) => {
+  document.getElementById("incomplete-list").removeChild(deleteTarget);
+};
+// 完了リストから未完了リストに追加
+const creatFromIncomplete = (text) => {
   // divの生成
   const div = document.createElement("div");
   div.className = "list-row";
   // liの生成
   const li = document.createElement("li");
-  li.innerText = inputText;
+  li.innerText = text;
   // buttonの生成
   // 完了ボタン
   const completeButton = document.createElement("button");
@@ -25,6 +34,13 @@ const onClickAdd = () => {
     // ボタンを生成
     const backButton = document.createElement("button");
     backButton.innerText = "戻す";
+    backButton.addEventListener("click", () => {
+      const deleteTarget = backButton.parentNode;
+      document.getElementById("complete-list").removeChild(deleteTarget);
+      const backTarget = backButton.parentNode;
+      const text = backTarget.firstElementChild.innerText;
+      creatFromIncomplete(text);
+    });
     //小要素を取得
     addTarget.appendChild(li);
     addTarget.appendChild(backButton);
@@ -44,10 +60,6 @@ const onClickAdd = () => {
   div.appendChild(deleteButton);
   // 未完了リストに追加
   document.getElementById("incomplete-list").appendChild(div);
-  // 未完了リストから削除
-  const deleteFromIncimpleteList = (deleteTarget) => {
-    document.getElementById("incomplete-list").removeChild(deleteTarget);
-  };
 };
 document.getElementById("add-text").addEventListener("click", () => {
   onClickAdd();
